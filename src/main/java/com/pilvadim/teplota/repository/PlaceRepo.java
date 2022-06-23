@@ -12,6 +12,9 @@ import java.util.List;
 public interface PlaceRepo {
 
     @Select("select * from Places")
-    List<Place> getPlaces();
+    List<Place> getAllPlaces();
+
+    @Select("select * from Places WHERE enabled = true")
+    List<Place> getAllEnabledPlaces();
 
 }

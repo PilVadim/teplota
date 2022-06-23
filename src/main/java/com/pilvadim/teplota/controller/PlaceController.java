@@ -28,4 +28,18 @@ public class PlaceController {
         return ps.getAllPlaces();
     }
 
+    @ApiOperation(value = "Get list of all available places", response = Place.class)
+    @GetMapping("/placesC")
+    public void getAllC(){
+
+        ps.getAllEnabledPlaces();
+        ps.getAllEnabledPlaces();
+        ps.getAllEnabledPlaces();
+        ps.getAllEnabledPlaces();
+        ps.getAllEnabledPlacesClearCache();
+        ps.getAllEnabledPlaces();
+
+    }
+
+
 }
