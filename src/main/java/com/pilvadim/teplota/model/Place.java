@@ -12,6 +12,7 @@ public class Place {
     private String name;
     private Float latitude;
     private Float longitude;
+    private Integer period;
     private Boolean enabled;
 
     public Integer getId() {
@@ -46,6 +47,14 @@ public class Place {
         this.longitude = longitude;
     }
 
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
+    }
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -53,4 +62,5 @@ public class Place {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
 }
