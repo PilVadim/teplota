@@ -3,8 +3,6 @@ package com.pilvadim.teplota.service;
 import com.pilvadim.teplota.model.Place;
 import com.pilvadim.teplota.repository.PlaceRepo;
 import com.pilvadim.teplota.service.exception.WeatherBadRequestException;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,19 +28,20 @@ public class PlaceService {
     }
 
     /**
-     * Receives list of enabled places. Cached service. Need to be reset to receive updated places
+     * Receives list of enabled places
      * @return list of enabled places
      */
-    @Cacheable("places")
     public List<Place> getAllEnabledPlaces(){
         return pr.getAllEnabledPlaces();
     }
 
     /**
-     * Reset cache for getAllEnabledPlaces() service
+     * Receives list of places by Ids list
+     * @return list of enabled places
      */
-    @CacheEvict("places")
-    public void getAllEnabledPlacesClearCache(){}
+    public List<Place> getAllPlacesByIds( List<Integer> ids ){
+        return pr.getAllPlacesByIds( ids.toArray(new Integer[0]) );
+    }
 
     /**
      * Validates and inserts a new place in the database

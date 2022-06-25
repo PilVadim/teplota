@@ -37,8 +37,6 @@ public class ScheduleService {
         StringBuilder report = new StringBuilder();
         stopProcesses();
 
-        //clear cache and get list of enabled places
-        placeServ.getAllEnabledPlacesClearCache();
         List<Place> places = placeServ.getAllEnabledPlaces();
 
         for ( Place p : places ) {

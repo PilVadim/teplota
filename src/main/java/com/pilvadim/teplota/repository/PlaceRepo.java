@@ -22,7 +22,11 @@ public interface PlaceRepo {
     @Select("select * from Places where enabled = true")
     List<Place> getAllEnabledPlaces();
 
-    @Insert("insert into places(name,latitude,longitude,period,enabled) values(#{name},#{latitude},#{longitude},#{period},#{enabled})")
+    @Select("select * from Places where ARRAY_CONTAINS (#{ids}, id) ")
+    List<Place> getAllPlacesByIds( Integer[] ids );
+
+    @Insert("insert into places(name,latitude,longitude,period,enabled) " +
+            "values(#{name},#{latitude},#{longitude},#{period},#{enabled})")
     @Options(useGeneratedKeys=true, keyProperty="id")
     Integer insert( Place t );
 

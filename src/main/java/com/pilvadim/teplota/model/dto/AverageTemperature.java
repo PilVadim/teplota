@@ -4,22 +4,19 @@ import java.time.LocalDateTime;
 
 public class AverageTemperature {
 
-    private Float celsius;
-    private LocalDateTime moment;
+    private final Float celsius;
+    private final LocalDateTime moment;
 
     public Float getCelsius() {
         return celsius;
-    }
-
-    public void setCelsius(Float celsius) {
-        this.celsius = celsius;
     }
 
     public LocalDateTime getMoment() {
         return moment;
     }
 
-    public void setMoment(LocalDateTime moment) {
+    public AverageTemperature( LocalDateTime moment, Float celsius ) {
         this.moment = moment;
+        this.celsius = celsius;
     }
 }

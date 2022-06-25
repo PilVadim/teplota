@@ -1,16 +1,42 @@
 package com.pilvadim.teplota.model.dto;
 
-import java.util.List;
+import com.pilvadim.teplota.model.Place;
 
 public class GroupedTemperatures {
 
-    List<LocationTemperatures> locations;
+    private Integer id;
+    private String name;
 
-    public List<LocationTemperatures> getLocations() {
-        return locations;
+    private LocationTemperatures temperatures;
+
+    public GroupedTemperatures( Place pl ) {
+
+        this.id = pl.getId();
+        this.name = pl.getName();
+        this.temperatures = new LocationTemperatures();
     }
 
-    public void setLocations(List<LocationTemperatures> locations) {
-        this.locations = locations;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocationTemperatures getTemperatures() {
+        return temperatures;
+    }
+
+    public void setTemperatures(LocationTemperatures temperatures) {
+        this.temperatures = temperatures;
     }
 }
