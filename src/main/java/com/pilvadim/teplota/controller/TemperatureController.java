@@ -1,6 +1,7 @@
 package com.pilvadim.teplota.controller;
 
 import com.pilvadim.teplota.model.Temperature;
+import com.pilvadim.teplota.model.dto.GroupedTemperatures;
 import com.pilvadim.teplota.service.TemperatureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,11 +25,11 @@ public class TemperatureController {
         this.ts = ts;
     }
 
-    @ApiOperation(value = "Get list of all temperatures for period", response = Temperature.class)
+    @ApiOperation(value = "Get list of all temperatures for period", response = GroupedTemperatures.class)
     @GetMapping("/temperatures")
-    public List<Temperature> getTemperaturesForPeriod(@RequestParam("start")
+    public List<GroupedTemperatures> getTemperaturesForPeriod(@RequestParam("start")
                                                       @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss") LocalDateTime start,
-                                                      @RequestParam("end")
+                                                              @RequestParam("end")
                                                       @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss") LocalDateTime end ){
         return ts.getTemperaturesForPeriod( start, end );
 

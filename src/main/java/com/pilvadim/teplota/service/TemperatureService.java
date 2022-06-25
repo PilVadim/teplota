@@ -1,7 +1,7 @@
 package com.pilvadim.teplota.service;
 
-import com.pilvadim.teplota.model.Place;
 import com.pilvadim.teplota.model.Temperature;
+import com.pilvadim.teplota.model.dto.GroupedTemperatures;
 import com.pilvadim.teplota.repository.TemperatureRepo;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +12,16 @@ import java.util.List;
 public class TemperatureService {
 
     final TemperatureRepo tr;
+    final AggregationService as;
 
-    public TemperatureService(TemperatureRepo tr) {
+    public TemperatureService(TemperatureRepo tr,
+                              AggregationService as) {
         this.tr = tr;
+        this.as = as;
     }
 
-    public List<Temperature> getTemperaturesForPeriod( LocalDateTime start, LocalDateTime end ){
-        return tr.getTemperaturesForPeriod( start,end );
+    public List<GroupedTemperatures> getTemperaturesForPeriod(LocalDateTime start, LocalDateTime end ){
+        return as.aggregateTemperatures( tr.getTemperaturesForPeriod( start,end ) );
     }
 
     public void save( Temperature t ){
