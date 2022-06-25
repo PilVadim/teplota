@@ -2,13 +2,16 @@ package com.pilvadim.teplota.service;
 
 import com.pilvadim.teplota.model.Place;
 import com.pilvadim.teplota.repository.PlaceRepo;
-import org.hibernate.annotations.Cache;
+import com.pilvadim.teplota.service.exception.WeatherBadRequestException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Provides services to receive whole list of places, enabled places, add new place, update existing place
+ */
 @Service
 public class PlaceService {
 
@@ -18,16 +21,93 @@ public class PlaceService {
         this.pr = pr;
     }
 
+    /**
+     * Receives whole list of places
+     * @return list of current places
+     */
     public List<Place> getAllPlaces(){
         return pr.getAllPlaces();
     }
 
+    /**
+     * Receives list of enabled places. Cached service. Need to be reset to receive updated places
+     * @return list of enabled places
+     */
     @Cacheable("places")
     public List<Place> getAllEnabledPlaces(){
         return pr.getAllEnabledPlaces();
     }
 
+    /**
+     * Reset cache for getAllEnabledPlaces() service
+     */
     @CacheEvict("places")
     public void getAllEnabledPlacesClearCache(){}
+
+    /**
+     * Validates and inserts a new place in the database
+     * @param pl new place
+     * @return id of a new place
+     */
+    public Integer addPlace( Place pl ){
+        validateInsert( pl );
+        return pr.insert( pl );
+    }
+
+    private void validateInsert(Place pl) {
+
+        if ( pl.getId() != null )
+            throw new WeatherBadRequestException( "Id field should be null" );
+
+        String ef = getEmptyFields( pl );
+        if ( ! ef.isEmpty() )
+            throw new WeatherBadRequestException( "Fields " + ef + "should be filled" );
+
+    }
+
+    private String getEmptyFields( Place pl ){
+        String emptyFields = "";
+
+        if ( pl.getName() == null )
+            emptyFields += "name, ";
+
+        if ( pl.getPeriod() == null )
+            emptyFields += "period, ";
+
+        if ( pl.getEnabled() == null )
+            emptyFields += "enabled, ";
+
+        if ( pl.getLatitude() == null )
+            emptyFields += "latitude, ";
+
+        if ( pl.getLongitude() == null )
+            emptyFields += "longitude, ";
+
+        return emptyFields;
+    }
+
+    /**
+     * Validates and updates place in the database
+     * @param pl place for update
+     * @return id of a updated place
+     */
+    public Integer updatePlace( Place pl ){
+        validateUpdate( pl );
+        return pr.update( pl );
+    }
+
+    private void validateUpdate( Place pl ) {
+
+        if ( pl.getId() == null )
+            throw new WeatherBadRequestException( "Id field should not be null" );
+
+        if ( pr.getPlace( pl.getId() ) == null )
+            throw new WeatherBadRequestException( "Place with id:" + pl.getId() + " not found" );
+
+        String ef = getEmptyFields( pl );
+        if ( ! ef.isEmpty() )
+            throw new WeatherBadRequestException( "Fields " + ef + "should be filled" );
+
+    }
 
 }

@@ -17,8 +17,12 @@ public class TemperatureService {
         this.tr = tr;
     }
 
-    public List<Temperature> getTemperaturesForPeriod(LocalDateTime start, LocalDateTime end ){
+    public List<Temperature> getTemperaturesForPeriod( LocalDateTime start, LocalDateTime end ){
         return tr.getTemperaturesForPeriod( start,end );
+    }
+
+    public void save( Temperature t ){
+        System.out.println( tr.save( t ) );
     }
 
 }

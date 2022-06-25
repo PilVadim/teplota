@@ -2,12 +2,9 @@ package com.pilvadim.teplota.controller;
 
 import com.pilvadim.teplota.model.Place;
 import com.pilvadim.teplota.service.PlaceService;
-import com.pilvadim.teplota.service.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,29 +14,27 @@ import java.util.List;
 public class PlaceController {
 
     final PlaceService ps;
-    final ScheduleService schs;
 
-    public PlaceController(PlaceService ps,
-                           ScheduleService schs) {
+    public PlaceController(PlaceService ps) {
         this.ps = ps;
-        this.schs = schs;
     }
 
-    @ApiOperation(value = "Get list of all available places", response = Place.class)
+    @ApiOperation(value = "Gets a list of all available places", response = Place.class)
     @GetMapping("/places")
     public List<Place> getAll(){
         return ps.getAllPlaces();
     }
 
-
-    @GetMapping("/placesC")
-    public void getAllC(){
-        schs.startTask();
+    @ApiOperation(value = "Validates and Adds new place, returns id of new place", response = Integer.class)
+    @PostMapping("/place")
+    public Integer addPlace( @RequestBody Place pl ){
+        return ps.addPlace(pl);
     }
 
-    @GetMapping("/placesF")
-    public void getAllF(){
-        schs.stopProcesses();
+    @ApiOperation(value = "Validates and Updates existing place, returns id of existing place", response = Integer.class)
+    @PutMapping("/place")
+    public Integer updatePlace(@RequestBody Place pl ){
+        return ps.updatePlace( pl );
     }
 
 }

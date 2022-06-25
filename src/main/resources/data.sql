@@ -19,7 +19,7 @@ CREATE TABLE temperatures (
 
 CREATE INDEX moment_index ON temperatures(moment);
 
-INSERT INTO places(id, name, latitude, longitude, period, enabled) VALUES ( 1, 'Saint Petersburg', 59.8944,30.2642, 20,TRUE );
+INSERT INTO places( name, latitude, longitude, period, enabled) VALUES ( 'Saint Petersburg', 59.8944,30.2642, 20,TRUE );
 
 INSERT INTO temperatures (placeid,celsius,moment)
 VALUES ( 1,12.01,'2022-06-01 00:00:00.0'),
