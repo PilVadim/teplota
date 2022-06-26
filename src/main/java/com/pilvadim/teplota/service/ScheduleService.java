@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * Unites methods to start and stop scheduled temperatures collecting
+ */
 @Service
 public class ScheduleService {
 
@@ -25,6 +28,9 @@ public class ScheduleService {
         this.temperatureServ = temperatureServ;
     }
 
+    /**
+     * Contains current running scheduled processes
+     */
     List<ScheduledExecutorService> processes = Collections.synchronizedList(new ArrayList<>());
 
     /**

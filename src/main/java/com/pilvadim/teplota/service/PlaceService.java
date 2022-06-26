@@ -3,7 +3,10 @@ package com.pilvadim.teplota.service;
 import com.pilvadim.teplota.model.Place;
 import com.pilvadim.teplota.repository.PlaceRepo;
 import com.pilvadim.teplota.service.exception.WeatherBadRequestException;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.List;
 
@@ -11,6 +14,7 @@ import java.util.List;
  * Provides services to receive whole list of places, enabled places, add new place, update existing place
  */
 @Service
+@SessionScope
 public class PlaceService {
 
     final PlaceRepo pr;
@@ -50,7 +54,9 @@ public class PlaceService {
      */
     public Integer addPlace( Place pl ){
         validateInsert( pl );
-        return pr.insert( pl );
+        synchronized (this) {
+            return pr.insert(pl);
+        }
     }
 
     private void validateInsert(Place pl) {

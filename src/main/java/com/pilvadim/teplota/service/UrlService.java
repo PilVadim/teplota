@@ -25,6 +25,11 @@ public class UrlService {
     @Value("${openweathermap.appid}")
     String appId;
 
+    /**
+     * Generates URL ready to be requested
+     * @param place Place
+     * @return String URL
+     */
     public String generateUrl( Place place ){
 
         return weatherSourceUrl.replace( LATITUDE_TAG, formatCoordinates( place.getLatitude() ) )

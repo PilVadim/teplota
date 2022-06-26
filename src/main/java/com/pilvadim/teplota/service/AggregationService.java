@@ -3,14 +3,12 @@ package com.pilvadim.teplota.service;
 import com.pilvadim.teplota.enums.AggregationType;
 import com.pilvadim.teplota.model.Place;
 import com.pilvadim.teplota.model.Temperature;
-import com.pilvadim.teplota.model.dto.AverageTemperature;
 import com.pilvadim.teplota.model.dto.GroupedTemperatures;
 import com.pilvadim.teplota.model.dto.LocationTemperatures;
+import com.pilvadim.teplota.model.temporal.FloatStorage;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,11 +16,19 @@ import java.util.stream.Collectors;
 public class AggregationService {
 
     final PlaceService ps;
+    final AggregationUtils au;
 
-    public AggregationService(PlaceService ps) {
+    public AggregationService(PlaceService ps,
+                              AggregationUtils au) {
         this.ps = ps;
+        this.au = au;
     }
 
+    /**
+     * Initiates average calculating and grouping for temperatures
+     * @param temperatures List of Temperature input
+     * @return GroupedTemperatures
+     */
     public List<GroupedTemperatures> aggregateTemperatures( List<Temperature> temperatures ){
 
         List<GroupedTemperatures> results = new ArrayList<>();
@@ -35,15 +41,26 @@ public class AggregationService {
         return results;
     }
 
+    /**
+     * Gets list of Places which are used in Temperatures input
+     * @param temperatures List of Temperatures
+     * @return List of Places
+     */
     private List<Place> getTemperaturesPlaces( List<Temperature> temperatures ){
 
         Set<Integer> locationIds = new HashSet<>();
-        temperatures.forEach(t -> locationIds.add(t.getPlaceId()));
+        temperatures.forEach( t -> locationIds.add(t.getPlaceId()) );
 
         return ps.getAllPlacesByIds( new ArrayList<>(locationIds) );
 
     }
 
+    /**
+     * Generates GroupedTemperatures from filtered, sorted and distributed temperatures
+     * @param temperatures full List of Temperatures
+     * @param pl current Place
+     * @return GroupedTemperatures
+     */
     private GroupedTemperatures groupTemperatures( List<Temperature> temperatures, Place pl ) {
 
         GroupedTemperatures gt = new GroupedTemperatures( pl );
@@ -58,68 +75,19 @@ public class AggregationService {
         Map< LocalDateTime, FloatStorage > monthsAggregation = new LinkedHashMap<>();
 
         for ( Temperature t : placeTemps ){
-            addCelsiusToAggregator( t, AggregationType.DAY, daysAggregation );
-            addCelsiusToAggregator( t, AggregationType.WEEK, weeksAggregation );
-            addCelsiusToAggregator( t, AggregationType.MONTH, monthsAggregation );
+            au.addCelsiusToAggregator( t, AggregationType.DAY, daysAggregation );
+            au.addCelsiusToAggregator( t, AggregationType.WEEK, weeksAggregation );
+            au.addCelsiusToAggregator( t, AggregationType.MONTH, monthsAggregation );
         }
 
         LocationTemperatures lt = gt.getTemperatures();
 
-        lt.getAll().addAll(temperatures);
+        lt.getAll().addAll(placeTemps);
 
-        addAggregated( lt.getAverageDays(), daysAggregation );
-        addAggregated( lt.getAverageWeeks(), weeksAggregation );
-        addAggregated( lt.getAverageMonths(), monthsAggregation );
+        au.addAggregated( lt.getAverageDays(), daysAggregation );
+        au.addAggregated( lt.getAverageWeeks(), weeksAggregation );
+        au.addAggregated( lt.getAverageMonths(), monthsAggregation );
 
         return gt;
     }
-
-    private void addCelsiusToAggregator( Temperature t,
-                                         AggregationType at,
-                                         Map< LocalDateTime, FloatStorage > aggregator ){
-
-        LocalDateTime ldtM = getKey( t.getMoment(), at );
-        if ( ! aggregator.containsKey(ldtM) )
-            aggregator.put( ldtM, new FloatStorage() );
-        aggregator.get( ldtM ).addSum( t.getCelsius() );
-
-    }
-
-    private LocalDateTime getKey(LocalDateTime ldt, AggregationType at) {
-        switch (at){
-            case DAY:
-                return ldt.toLocalDate().atTime(LocalTime.MIN);
-            case WEEK:
-                return ldt.toLocalDate().atTime(LocalTime.MIN).with(DayOfWeek.MONDAY);
-            case MONTH:
-                return ldt.toLocalDate().atTime(LocalTime.MIN).withDayOfMonth(1);
-            default:
-                return ldt;
-        }
-    }
-
-    private void addAggregated( List<AverageTemperature> averages,
-                                Map<LocalDateTime, FloatStorage> aggregation ) {
-
-        for ( LocalDateTime ldt : aggregation.keySet() ){
-            averages.add( new AverageTemperature( ldt, aggregation.get(ldt).getAverage() ) );
-        }
-
-    }
-
-    private class FloatStorage {
-        private Integer number = 0;
-        private Float sum = 0.0f;
-
-        Float getAverage(){
-            return Math.round( (sum/number) * 100 ) / 100.0f;
-        }
-
-        public void addSum( Float sum ) {
-            this.sum += sum;
-            this.number += 1;
-        }
-
-    }
-
 }

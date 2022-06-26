@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Provides services to work with Temperature
+ */
 @Service
 public class TemperatureService {
 
