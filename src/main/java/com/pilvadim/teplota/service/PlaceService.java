@@ -55,8 +55,9 @@ public class PlaceService {
     public Integer addPlace( Place pl ){
         validateInsert( pl );
         synchronized (this) {
-            return pr.insert(pl);
+            pr.save( pl );
         }
+        return pl.getId();
     }
 
     private void validateInsert(Place pl) {
@@ -94,11 +95,12 @@ public class PlaceService {
     /**
      * Validates and updates place in the database
      * @param pl place for update
-     * @return id of a updated place
+     * @return id of an updated place
      */
     public Integer updatePlace( Place pl ){
         validateUpdate( pl );
-        return pr.update( pl );
+        pr.update( pl );
+        return pl.getId();
     }
 
     private void validateUpdate( Place pl ) {

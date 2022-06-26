@@ -22,13 +22,13 @@ public interface PlaceRepo {
     @Select("select * from Places where enabled = true")
     List<Place> getAllEnabledPlaces();
 
-    @Select("select * from Places where ARRAY_CONTAINS (#{ids}, id) ")
+    @Select("select * from Places where id=ANY(#{ids}::int[])")
     List<Place> getAllPlacesByIds( Integer[] ids );
 
     @Insert("insert into places(name,latitude,longitude,period,enabled) " +
             "values(#{name},#{latitude},#{longitude},#{period},#{enabled})")
     @Options(useGeneratedKeys=true, keyProperty="id")
-    Integer insert( Place t );
+    void save( Place t );
 
     @Insert("update places set " +
                 "name=#{name}," +
@@ -38,6 +38,6 @@ public interface PlaceRepo {
                 "enabled=#{enabled} " +
             "where id = #{id}")
     @Options(useGeneratedKeys=true, keyProperty="id")
-    Integer update( Place t );
+    void update( Place t );
 
 }

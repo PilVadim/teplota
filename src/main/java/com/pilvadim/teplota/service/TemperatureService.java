@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Provides services to work with Temperature
+ * Provides services to initiate call various Temperature methods
  */
 @Service
 public class TemperatureService {
@@ -28,7 +28,7 @@ public class TemperatureService {
     }
 
     public void save( Temperature t ){
-        System.out.println( tr.save( t ) );
+        tr.save( t );
     }
 
 }
