@@ -25,13 +25,13 @@ public class PlaceController {
         return ps.getAllPlaces();
     }
 
-    @ApiOperation(value = "Validates and Adds new place, returns id of new place", response = Integer.class)
+    @ApiOperation(value = "(Secured) Validates and Adds new place, returns id of new place", response = Integer.class)
     @PostMapping("/place")
     public Integer addPlace( @RequestBody Place pl ){
         return ps.addPlace(pl);
     }
 
-    @ApiOperation(value = "Validates and Updates existing place, returns id of existing place", response = Integer.class)
+    @ApiOperation(value = "(Secured) Validates and Updates existing place, returns id of existing place", response = Integer.class)
     @PutMapping("/place")
     public Integer updatePlace(@RequestBody Place pl ){
         return ps.updatePlace( pl );

@@ -4,6 +4,7 @@ import com.pilvadim.teplota.service.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +19,8 @@ public class ScheduleController {
         this.schs = schs;
     }
 
-    @ApiOperation(value = "Starts collecting temperatures data, returns report", response = String.class)
-    @GetMapping("/start")
+    @ApiOperation(value = "(Secured) Starts collecting temperatures data, returns report", response = String.class)
+    @PostMapping("/start")
     public String start(){
         try {
             return schs.startProcesses();
@@ -28,8 +29,8 @@ public class ScheduleController {
         }
     }
 
-    @ApiOperation(value = "Stops collecting temperatures data", response = String.class)
-    @GetMapping("/stop")
+    @ApiOperation(value = "(Secured) Stops collecting temperatures data", response = String.class)
+    @PostMapping("/stop")
     public String stop(){
         try {
             schs.stopProcesses();

@@ -1,25 +1,29 @@
-DROP ALL OBJECTS;
-
 CREATE TABLE places (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR_IGNORECASE(30),
-  latitude decimal (7,4) NOT NULL,
-  longitude decimal (8,4) NOT NULL,
-  period INT,
-  enabled BOOLEAN NOT NULL DEFAULT TRUE
+    id INT GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(30),
+    latitude NUMERIC (7,4) NOT NULL,
+    longitude NUMERIC (8,4) NOT NULL,
+    period INT NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE temperatures (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  celsius decimal (4,2) NOT NULL,
-  placeid INT NOT NULL,
-  moment TIMESTAMP,
-  foreign key (placeid) references places(id)
+    id INT GENERATED ALWAYS AS IDENTITY,
+    celsius NUMERIC (4,2) NOT NULL,
+    placeid INT NOT NULL,
+    moment TIMESTAMP,
+    PRIMARY KEY(id),
+    CONSTRAINT fk_place
+      FOREIGN KEY(placeid)
+          REFERENCES places(id)
 );
 
 CREATE INDEX moment_index ON temperatures(moment);
 
-INSERT INTO places( name, latitude, longitude, period, enabled) VALUES ( 'Saint Petersburg', 59.8944,30.2642, 20,TRUE );
+INSERT INTO places( name, latitude, longitude, period, enabled)
+    VALUES ( 'Saint Petersburg', 59.8944,30.2642, 300,TRUE );
+
 
 INSERT INTO temperatures (placeid,celsius,moment)
 VALUES ( 1,12.01,'2022-06-01 00:00:00.0'),
