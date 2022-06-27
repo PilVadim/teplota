@@ -41,7 +41,7 @@ public class AggregationUtils {
      * @param at AggregationType
      * @return LocalDateTime key
      */
-    private LocalDateTime getKey(LocalDateTime ldt, AggregationType at) {
+    public LocalDateTime getKey(LocalDateTime ldt, AggregationType at) {
         switch (at){
             case DAY:
                 return ldt.toLocalDate().atTime(LocalTime.MIN);

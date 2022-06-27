@@ -83,7 +83,7 @@ public class ScheduleService {
     private void saveTemperature( Integer placeId, WeatherResponse wr ) {
 
         Temperature t = new Temperature();
-        t.setValue( wr.getMain().getTemp() );
+        t.setCelsius( wr.getMain().getTemp() );
         t.setPlaceId( placeId );
         t.setMoment( LocalDateTime.ofInstant( Instant.ofEpochSecond( wr.getDt() ),
                 TimeZone.getDefault().toZoneId() ) );

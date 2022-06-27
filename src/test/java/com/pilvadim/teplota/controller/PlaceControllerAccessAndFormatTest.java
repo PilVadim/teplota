@@ -18,7 +18,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class PlaceControllerTest {
+class PlaceControllerAccessAndFormatTest {
+
+    private final String PLACES = "/api/v1/places";
+    private final String PLACE = "/api/v1/place";
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,20 +41,20 @@ class PlaceControllerTest {
     @Test
     @WithMockUser(username = "user", password = "pwd", roles = "USER")
     void getAllTestUser() throws Exception {
-        mockMvc.perform( MockMvcRequestBuilders.get("/api/v1/places").params( paramsPeriod ))
+        mockMvc.perform( MockMvcRequestBuilders.get(PLACES).params( paramsPeriod ))
                 .andExpect( status().isOk());
     }
 
     @Test
     void getAllTestNoUser() throws Exception {
-        mockMvc.perform( MockMvcRequestBuilders.get("/api/v1/places").params( paramsPeriod ))
+        mockMvc.perform( MockMvcRequestBuilders.get(PLACES).params( paramsPeriod ))
                 .andExpect( status().isOk());
     }
 
     @Test
     @WithMockUser(username = "user", password = "pwd", roles = "USER")
     void addPlaceTestUser() throws Exception  {
-        mockMvc.perform( MockMvcRequestBuilders.post("/api/v1/place")
+        mockMvc.perform( MockMvcRequestBuilders.post(PLACE)
                         .contentType( APPLICATION_JSON )
                         .content( placeBodyAdd ))
                         .andExpect( status().isOk());
@@ -60,7 +63,7 @@ class PlaceControllerTest {
     @Test
     @WithMockUser(username = "user", password = "pwd", roles = "USER")
     void addPlaceTestUserBadRequest() throws Exception  {
-        mockMvc.perform( MockMvcRequestBuilders.post("/api/v1/place")
+        mockMvc.perform( MockMvcRequestBuilders.post(PLACE)
                         .contentType( APPLICATION_JSON )
                         .content( placeBodyUpdate ))
                 .andExpect( status().isBadRequest());
@@ -68,7 +71,7 @@ class PlaceControllerTest {
 
     @Test
     void addPlaceTestNoUser() throws Exception  {
-        mockMvc.perform( MockMvcRequestBuilders.post("/api/v1/place")
+        mockMvc.perform( MockMvcRequestBuilders.post(PLACE)
                         .contentType( APPLICATION_JSON )
                         .content( placeBodyAdd ))
                         .andExpect( status().isUnauthorized());
@@ -77,7 +80,7 @@ class PlaceControllerTest {
     @Test
     @WithMockUser(username = "user", password = "pwd", roles = "USER")
     void updatePlaceTestUser() throws Exception  {
-        mockMvc.perform( MockMvcRequestBuilders.put("/api/v1/place")
+        mockMvc.perform( MockMvcRequestBuilders.put(PLACE)
                         .contentType( APPLICATION_JSON )
                         .content( placeBodyUpdate ))
                         .andExpect( status().isOk());
@@ -86,7 +89,7 @@ class PlaceControllerTest {
     @Test
     @WithMockUser(username = "user", password = "pwd", roles = "USER")
     void updatePlaceTestUserBadRequest() throws Exception  {
-        mockMvc.perform( MockMvcRequestBuilders.put("/api/v1/place")
+        mockMvc.perform( MockMvcRequestBuilders.put(PLACE)
                         .contentType( APPLICATION_JSON )
                         .content( placeBodyAdd ))
                 .andExpect( status().isBadRequest());
@@ -94,7 +97,7 @@ class PlaceControllerTest {
 
     @Test
     void updatePlaceTestNoUser() throws Exception  {
-        mockMvc.perform( MockMvcRequestBuilders.put("/api/v1/place")
+        mockMvc.perform( MockMvcRequestBuilders.put(PLACE)
                         .contentType( APPLICATION_JSON )
                         .content( placeBodyUpdate ))
                         .andExpect( status().isUnauthorized());

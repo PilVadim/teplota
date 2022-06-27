@@ -37,7 +37,7 @@ public class Temperature {
         return celsius;
     }
 
-    public void setValue(Float celsius) {
+    public void setCelsius(Float celsius) {
         this.celsius = celsius;
     }
 
