@@ -19,8 +19,8 @@ public class Place {
         return id;
     }
 
-    public void setPlaceId(Integer placeId) {
-        this.id = placeId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

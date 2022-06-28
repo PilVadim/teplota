@@ -4,8 +4,10 @@ import com.pilvadim.teplota.enums.AggregationType;
 import com.pilvadim.teplota.model.Temperature;
 import com.pilvadim.teplota.model.temporal.FloatStorage;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +17,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RunWith(SpringRunner.class)
 @WebMvcTest(AggregationUtils.class)
 class AggregationUtilsTest {
 

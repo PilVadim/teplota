@@ -2,15 +2,12 @@ package com.pilvadim.teplota.controller;
 
 import com.pilvadim.teplota.TeplotaApplication;
 import com.pilvadim.teplota.model.Place;
-import com.pilvadim.teplota.model.Temperature;
-import com.pilvadim.teplota.repository.PlaceRepo;
 import com.pilvadim.teplota.service.PlaceService;
 import com.pilvadim.teplota.service.TemperatureService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,7 +20,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ContextConfiguration(classes= TeplotaApplication.class)
 @TestPropertySource("classpath:applicationTest.properties")
-class PlaceControllerAccessAndFormatTest {
+class PlaceControllerAccessTest {
 
     private final String PLACES = "/api/v1/places";
     private final String PLACE = "/api/v1/place";
